@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\BusinessInfoController;
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Features;
+use App\Http\Controllers\Api\SlugController;
 
 Route::get('/', [LandingPageController::class, 'index'])->name('home');
 
@@ -18,20 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     // API Routes
-    Route::post('/api/check-slug', function (\Illuminate\Http\Request $request) {
-        $slug = $request->input('slug');
-        $excludeId = $request->input('excludeId');
-
-        $query = \App\Models\Product::where('slug', $slug);
-        
-        if ($excludeId) {
-            $query->where('id', '!=', $excludeId);
-        }
-
-        return response()->json([
-            'exists' => $query->exists(),
-        ]);
-    });
+    Route::post('/check-slug', [SlugController::class, 'check']);
 
     // Admin Routes
     Route::prefix('admin')->name('admin.')->group(function () {
