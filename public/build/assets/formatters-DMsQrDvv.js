@@ -1,0 +1,1 @@
+function e(e){let t=Number(e);return Number.isNaN(t)?`0`:t.toLocaleString(`id-ID`,{minimumFractionDigits:0,maximumFractionDigits:0})}export{e as t};
