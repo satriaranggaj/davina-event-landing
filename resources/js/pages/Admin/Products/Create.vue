@@ -185,28 +185,27 @@ const imagePreview = ref<string>('');
 const errors = ref<Record<string, string>>({});
 
 // Generate slug from name with duplicate checking
-const generateSlug = async (name: string): Promise<string> => {
-  // Convert to slug
+const generateSlug = async (name: string) => {
   let slug = name
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, '-') // Replace spaces with dashes
-    .replace(/-+/g, '-'); // Replace multiple dashes with single dash
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
 
-  // Check if slug already exists
-  const existingSlugs = await fetch('/check-slug', {
+  const res = await fetch('/api/check-slug', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
+      'Accept': 'application/json',
     },
-    body: JSON.stringify({ slug }),
-  }).then(res => res.json());
+    body: JSON.stringify({ name }),
+  });
 
-  if (existingSlugs.exists) {
-    // Generate unique code and append
-    const uniqueCode = Math.random().toString(36).substring(2, 8);
+  const data = await res.json();
+
+  if (data.exists) {
+    const uniqueCode = Math.random().toString(36).substring(2, 6);
     slug = `${slug}-${uniqueCode}`;
   }
 

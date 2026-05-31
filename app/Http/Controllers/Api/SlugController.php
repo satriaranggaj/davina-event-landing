@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Str;
 
 class SlugController extends Controller
 {
     public function check(Request $request)
     {
-        $slug = $request->slug;
+        $slug = Str::slug($request->name);
+
+        $exists = Product::where('slug', $slug)->exists();
 
         return response()->json([
-            'exists' => Product::where('slug', $slug)->exists(),
+            'slug' => $slug,
+            'exists' => $exists,
         ]);
     }
 }
+

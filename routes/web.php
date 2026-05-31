@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\BusinessInfoController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\SlugController;
 
 Route::get('/', [LandingPageController::class, 'index'])->name('home');
 
@@ -16,9 +15,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return inertia('Dashboard');
     })->name('dashboard');
-
-    // API Routes
-    Route::post('/check-slug', [SlugController::class, 'check']);
 
     // Admin Routes
     Route::prefix('admin')->name('admin.')->group(function () {
