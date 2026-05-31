@@ -129,7 +129,7 @@
     <!-- Hero Section -->
     <section
       id="hero"
-      class="relative bg-gradient-to-br from-white to-gray-50 py-20 md:py-32"
+      class="relative bg-linear-to-br from-white to-gray-50 py-20 md:py-32"
     >
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
@@ -160,7 +160,7 @@
           <div class="flex items-center justify-center">
             <div v-if="featuredProducts.length > 0" class="relative w-full">
               <!-- Product Slider -->
-              <div class="relative h-80 w-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center overflow-hidden group">
+              <div class="relative h-80 w-full bg-linear-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center overflow-hidden group">
                 <img 
                   v-if="featuredProducts[currentProductSlideIndex]?.image" 
                   :key="`product-image-${currentProductSlideIndex}`"
@@ -175,7 +175,7 @@
                 <!-- Product Info Overlay -->
                 <div 
                   :key="`product-overlay-${currentProductSlideIndex}`"
-                  class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6 product-slider-overlay"
+                  class="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent p-6 product-slider-overlay"
                 >
                   <h4 class="text-white font-bold text-lg mb-1">
                     {{ featuredProducts[currentProductSlideIndex]?.name }}
@@ -200,7 +200,7 @@
                 <button
                   v-if="featuredProducts.length > 1"
                   @click="prevProductSlide"
-                  class="absolute left-4 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 transition opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute left-4 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <ChevronUp :size="24" class="-rotate-90" />
                 </button>
@@ -208,7 +208,7 @@
                 <button
                   v-if="featuredProducts.length > 1"
                   @click="nextProductSlide"
-                  class="absolute right-4 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 transition opacity-0 group-hover:opacity-100 transition-opacity"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <ChevronUp :size="24" class="rotate-90" />
                 </button>
@@ -226,7 +226,7 @@
               </div>
             </div>
 
-            <div v-else class="relative h-80 w-full bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl flex items-center justify-center">
+            <div v-else class="relative h-80 w-full bg-linear-to-br from-gray-200 to-gray-300 rounded-2xl flex items-center justify-center">
               <Sparkles :size="120" class="text-black opacity-50" />
             </div>
           </div>
@@ -656,7 +656,7 @@
             <h3 class="mb-6 text-2xl font-bold text-white">Informasi Kontak</h3>
             <div class="space-y-4">
               <div v-if="props.phone" class="flex items-start gap-4">
-                <Phone :size="24" class="text-blue-500 flex-shrink-0 mt-1" />
+                <Phone :size="24" class="text-blue-500 shrink-0 mt-1" />
                 <div>
                   <p class="text-sm font-medium text-gray-400">Telepon</p>
                   <a :href="`tel:${props.phone.replace(/\D/g, '')}`" class="text-white hover:text-blue-400 transition">
@@ -666,7 +666,7 @@
               </div>
               
               <div v-if="props.whatsappNumber" class="flex items-start gap-4">
-                <MessageCircle :size="24" class="text-green-500 flex-shrink-0 mt-1" />
+                <MessageCircle :size="24" class="text-green-500 shrink-0 mt-1" />
                 <div>
                   <p class="text-sm font-medium text-gray-400">WhatsApp</p>
                   <a :href="`https://wa.me/${props.whatsappNumber.replace(/\D/g, '')}`" target="_blank" class="text-white hover:text-green-400 transition">
@@ -676,7 +676,7 @@
               </div>
 
               <div v-if="props.email" class="flex items-start gap-4">
-                <Mail :size="24" class="text-red-500 flex-shrink-0 mt-1" />
+                <Mail :size="24" class="text-red-500 shrink-0 mt-1" />
                 <div>
                   <p class="text-sm font-medium text-gray-400">Email</p>
                   <a :href="`mailto:${props.email}`" class="text-white hover:text-red-400 transition">
@@ -686,7 +686,7 @@
               </div>
 
               <div v-if="props.locationLink" class="flex items-start gap-4">
-                <MapPin :size="24" class="text-orange-500 flex-shrink-0 mt-1" />
+                <MapPin :size="24" class="text-orange-500 shrink-0 mt-1" />
                 <div>
                   <p class="text-sm font-medium text-gray-400">Lokasi</p>
                   <a :href="props.locationLink" target="_blank" class="text-white hover:text-orange-400 transition">
@@ -1107,6 +1107,7 @@ interface Product {
   specifications: string;
   stock: number;
   category_id: number;
+  image?: string;
 }
 
 interface Testimonial {

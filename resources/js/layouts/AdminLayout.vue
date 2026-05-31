@@ -238,11 +238,11 @@
         <div class="flex-1 overflow-auto">
           <div class="px-4 md:px-6 py-6 md:py-8">
             <!-- Flash Messages -->
-            <div v-if="$page.props.flash?.success" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 font-medium">
-              {{ $page.props.flash.success }}
+            <div v-if="flash?.success" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 font-medium">
+              {{ flash.success }}
             </div>
-            <div v-if="$page.props.flash?.error" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 font-medium">
-              {{ $page.props.flash.error }}
+            <div v-if="flash?.error" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 font-medium">
+              {{ flash.error }}
             </div>
 
             <!-- Content with horizontal scroll for tables on mobile -->
@@ -278,6 +278,7 @@ import {
 
 const page = usePage();
 const mobileMenuOpen = ref(false);
+const flash = computed(() => page.props.flash as { success?: string; error?: string } | undefined);
 
 interface Props {
   pageTitle?: string;
