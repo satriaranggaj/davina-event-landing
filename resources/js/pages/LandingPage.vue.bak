@@ -1,0 +1,751 @@
+<template>
+  <div class="min-h-screen bg-white">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+      <div class="container mx-auto flex items-center justify-between px-4 py-3">
+        <div class="flex items-center gap-3">
+          <img src="/favicon_io/apple-touch-icon.png" alt="Logo" class="w-full max-w-16" />
+          <div>
+            <h1 class="text-lg font-bold text-black md:text-2xl">{{ businessName }}</h1>
+            <span class="text-xs text-gray-600">{{ service }}</span>
+          </div>
+        </div>
+        <div class="hidden items-center gap-8 md:flex">
+          <button
+            @click="scrollToSection('hero')"
+            :class="activeSection === 'hero' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="font-medium transition"
+          >
+            Beranda
+          </button>
+          <button
+            @click="scrollToSection('catalog')"
+            :class="activeSection === 'catalog' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="font-medium transition"
+          >
+            Katalog
+          </button>
+          <button
+            @click="scrollToSection('gallery')"
+            :class="activeSection === 'gallery' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="font-medium transition"
+          >
+            Galeri
+          </button>
+          <button
+            @click="scrollToSection('faq')"
+            :class="activeSection === 'faq' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="font-medium transition"
+          >
+            FAQ
+          </button>
+          <button
+            @click="scrollToSection('contact')"
+            class="rounded-lg bg-black px-6 py-2 text-white hover:bg-gray-800 font-medium transition"
+          >
+            Hubungi Kami
+          </button>
+        </div>
+        <button
+          @click="mobileMenuOpen = !mobileMenuOpen"
+          class="md:hidden text-black"
+        >
+          <Menu :size="24" />
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        v-if="mobileMenuOpen"
+        class="border-t border-gray-200 bg-white md:hidden"
+      >
+        <div class="container mx-auto flex flex-col gap-4 px-4 py-4">
+          <button
+            @click="scrollToSection('hero'); mobileMenuOpen = false"
+            :class="activeSection === 'hero' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="text-left font-medium transition"
+          >
+            Beranda
+          </button>
+          <button
+            @click="scrollToSection('catalog'); mobileMenuOpen = false"
+            :class="activeSection === 'catalog' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="text-left font-medium transition"
+          >
+            Katalog
+          </button>
+          <button
+            @click="scrollToSection('gallery'); mobileMenuOpen = false"
+            :class="activeSection === 'gallery' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="text-left font-medium transition"
+          >
+            Galeri
+          </button>
+          <button
+            @click="scrollToSection('faq'); mobileMenuOpen = false"
+            :class="activeSection === 'faq' ? 'text-black font-bold' : 'text-gray-400 hover:text-black'"
+            class="text-left font-medium transition"
+          >
+            FAQ
+          </button>
+          <button
+            @click="scrollToSection('contact'); mobileMenuOpen = false"
+            class="rounded-lg bg-black px-6 py-2 text-white hover:bg-gray-800 font-medium transition"
+          >
+            Hubungi Kami
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      id="hero"
+      class="relative bg-gradient-to-br from-white to-gray-50 py-20 md:py-32"
+    >
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
+          <div class="flex flex-col justify-center">
+            <h2 class="mb-4 text-4xl font-bold md:text-5xl text-black">
+              Sewa Peralatan Event Lengkap & Terpercaya
+            </h2>
+            <p class="mb-6 text-lg text-gray-400">
+              {{ businessName }} menyediakan layanan sewa peralatan event profesional untuk berbagai jenis acara
+              seperti pernikahan, ulang tahun, gathering, dan event kantor.
+            </p>
+            <div class="flex flex-col gap-4 sm:flex-row">
+              <button
+                @click="scrollToSection('catalog')"
+                class="rounded-lg bg-black px-8 py-3 font-semibold text-white hover:bg-gray-800 transition"
+              >
+                Lihat Katalog
+              </button>
+              <button
+                @click="openWhatsApp"
+                class="flex items-center justify-center gap-2 rounded-lg border-2 border-black px-8 py-3 font-semibold text-black hover:bg-gray-100 transition"
+              >
+                <MessageCircle :size="20" />
+                Konsultasi Gratis
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center justify-center">
+            <div class="relative h-80 w-full bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl flex items-center justify-center">
+              <Sparkles :size="120" class="text-black opacity-50" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Services Preview -->
+    <section class="bg-white py-16">
+      <div class="container mx-auto px-4">
+        <h3 class="mb-12 text-center text-3xl font-bold text-gray-900">
+          Layanan Kami
+        </h3>
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div
+            v-for="(service, idx) in services"
+            :key="idx"
+            class="rounded-xl border border-gray-300 p-8 text-center hover:shadow-lg transition bg-white"
+          >
+            <component
+              :is="getIconComponent(service.icon)"
+              :size="48"
+              class="mx-auto mb-4 text-black"
+            />
+            <h4 class="mb-2 text-xl font-semibold text-gray-900">
+              {{ service.title }}
+            </h4>
+            <p class="text-gray-600">
+              {{ service.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog" class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <h3 class="mb-4 text-center text-3xl font-bold text-gray-900">
+          Katalog Produk
+        </h3>
+        <p class="mb-12 text-center text-gray-600">
+          Cari perlengkapan event yang kamu butuhkan
+        </p>
+
+        <!-- Category Filter -->
+        <div class="mb-12 flex flex-wrap justify-center gap-4">
+          <button
+            v-for="category in categories"
+            :key="category.id"
+            @click="selectedCategory = category.id"
+            class="rounded-full px-6 py-2 transition font-medium"
+            :class="
+              selectedCategory === category.id
+                ? 'bg-black text-white'
+                : 'bg-white text-gray-400 border border-gray-300 hover:border-black'
+            "
+          >
+            {{ category.name }}
+          </button>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div
+            v-for="product in filteredProducts"
+            :key="product.id"
+            class="overflow-hidden rounded-lg border border-gray-200 bg-white hover:shadow-lg transition"
+          >
+            <div class="relative h-48 bg-gray-200 flex items-center justify-center">
+              <Image :size="80" class="text-gray-400" />
+              <span
+                v-if="product.minimum_order > 1"
+                class="absolute top-2 right-2 rounded-full bg-black px-3 py-1 text-sm text-white"
+              >
+                Min. {{ product.minimum_order }} {{ product.price_unit }}
+              </span>
+            </div>
+            <div class="p-4">
+              <h4 class="mb-2 font-semibold text-gray-900">
+                {{ product.name }}
+              </h4>
+              <p class="mb-4 text-sm text-gray-600">
+                {{ product.description }}
+              </p>
+              <div class="mb-4 flex items-center justify-between">
+                <span class="text-lg font-bold text-black">
+                  Rp {{ formatPrice(product.price_per_unit) }}
+                </span>
+                <span class="text-sm text-gray-500">/ {{ product.price_unit }}</span>
+              </div>
+              <button
+                @click="selectedProduct = product; showProductDetail = true"
+                class="w-full rounded-lg bg-black px-4 py-2 text-white font-semibold hover:bg-gray-800 transition"
+              >
+                Lihat Detail
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="bg-white py-16">
+      <div class="container mx-auto px-4">
+        <h3 class="mb-4 text-center text-3xl font-bold text-gray-900">
+          Galeri Kami
+        </h3>
+        <p class="mb-12 text-center text-gray-600">
+          Koleksi dokumentasi instalasi dan event profesional
+        </p>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            v-for="gallery in galleries"
+            :key="gallery.id"
+            class="overflow-hidden rounded-lg h-64 bg-gray-200 flex items-center justify-center group cursor-pointer"
+          >
+            <img :src="gallery.image" :alt="gallery.title" class="w-full h-full object-cover group-hover:scale-105 transition" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <h3 class="mb-12 text-center text-3xl font-bold text-gray-900">
+          Tentang {{ businessName }}
+        </h3>
+
+        <div class="mb-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div class="rounded-xl bg-white p-8 text-center shadow-md">
+            <Zap :size="40" class="mx-auto mb-4 text-black" />
+            <h4 class="mb-2 text-lg font-semibold text-gray-900">
+              Respon Sangat Cepat
+            </h4>
+            <p class="text-gray-600">
+              Penawaran diproses dalam hitungan menit. Siap melayani kebutuhan event mendadak.
+            </p>
+          </div>
+
+          <div class="rounded-xl bg-white p-8 text-center shadow-md">
+            <Gem :size="40" class="mx-auto mb-4 text-black" />
+            <h4 class="mb-2 text-lg font-semibold text-gray-900">
+              Peralatan Berkualitas
+            </h4>
+            <p class="text-gray-600">
+              Semua unit terawat, bersih, dan dicek sebelum pengiriman agar performanya optimal.
+            </p>
+          </div>
+
+          <div class="rounded-xl bg-white p-8 text-center shadow-md">
+            <Users :size="40" class="mx-auto mb-4 text-black" />
+            <h4 class="mb-2 text-lg font-semibold text-gray-900">
+              Tim Profesional
+            </h4>
+            <p class="text-gray-600">
+              Teknisi berpengalaman memastikan pemasangan rapi, aman, dan sesuai standar event.
+            </p>
+          </div>
+
+          <div class="rounded-xl bg-white p-8 text-center shadow-md">
+            <Truck :size="40" class="mx-auto mb-4 text-black" />
+            <h4 class="mb-2 text-lg font-semibold text-gray-900">
+              Pengiriman Tepat Waktu
+            </h4>
+            <p class="text-gray-600">
+              Armada siap kirim ke area Jabodebek dengan ketepatan waktu tinggi.
+            </p>
+          </div>
+        </div>
+
+        <div class="rounded-lg border-l-4 border-black bg-gray-50 p-8">
+          <h4 class="mb-4 text-2xl font-bold text-black">
+            Profil Lengkap
+          </h4>
+          <p class="mb-4 text-gray-400 leading-relaxed">
+            Kami menyediakan layanan sewa perlengkapan event lengkap dan terpercaya dengan harga yang
+            terjangkau. Fokus utama kami adalah kecepatan, kerapian, dan profesionalitas dalam
+            memberikan layanan terbaik untuk berbagai skala acara.
+          </p>
+          <p class="text-gray-400 leading-relaxed">
+            Cocok untuk pernikahan, ulang tahun, sunatan, wisuda, gathering, konser, festival, hingga
+            event kantor dengan layanan yang kami berikan selalu memastikan acara Anda berjalan lancar
+            dan sukses.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="bg-white py-16">
+      <div class="container mx-auto px-4">
+        <h3 class="mb-4 text-center text-3xl font-bold text-gray-900">
+          Apa Kata Klien Kami
+        </h3>
+        <p class="mb-12 text-center text-gray-600">
+          Klien kami percaya pada kualitas dan layanan profesional yang kami berikan
+        </p>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            v-for="testimonial in testimonials"
+            :key="testimonial.id"
+            class="rounded-lg bg-gray-50 p-6 shadow-md"
+          >
+            <div class="mb-4 flex gap-1">
+              <Star :size="16" class="fill-yellow-400 text-yellow-400" v-for="_ in testimonial.rating" :key="Math.random()" />
+            </div>
+            <p class="mb-4 italic text-gray-400">
+              "{{ testimonial.content }}"
+            </p>
+            <p class="font-semibold text-gray-900">
+              — {{ testimonial.client_name }}
+            </p>
+            <p class="text-sm text-gray-600">
+              {{ testimonial.client_role }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <h3 class="mb-4 text-center text-3xl font-bold text-gray-900">
+          Pertanyaan yang Sering Diajukan
+        </h3>
+        <p class="mb-12 text-center text-gray-600">
+          Informasi lengkap untuk memastikan acara Anda berjalan lancar
+        </p>
+
+        <div class="mx-auto max-w-2xl space-y-4">
+          <div
+            v-for="(faq, idx) in faqs"
+            :key="idx"
+            class="rounded-lg border border-gray-200 bg-white"
+          >
+            <button
+              @click="openFaqIdx = openFaqIdx === idx ? -1 : idx"
+              class="flex w-full items-center justify-between p-6 text-left hover:bg-gray-50 transition"
+            >
+              <h4 class="font-semibold text-gray-900">
+                {{ faq.question }}
+              </h4>
+              <component
+                :is="openFaqIdx === idx ? ChevronUp : ChevronDown"
+                :size="20"
+                class="text-gray-600"
+              />
+            </button>
+            <div
+              v-show="openFaqIdx === idx"
+              class="border-t border-gray-200 p-6"
+            >
+              <p class="text-gray-400">
+                {{ faq.answer }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gradient-to-br from-black to-gray-800 py-16 text-white">
+      <div class="container mx-auto px-4">
+        <h3 class="mb-4 text-center text-3xl font-bold">
+          Hubungi Kami
+        </h3>
+        <p class="mb-12 text-center text-gray-100">
+          Silakan hubungi kami untuk konsultasi gratis dan penawaran terbaik
+        </p>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="rounded-lg bg-white bg-opacity-10 p-6 text-center">
+            <Package :size="40" class="mx-auto mb-4" />
+            <h4 class="mb-2 text-lg font-semibold">
+              Paket Lengkap
+            </h4>
+            <p class="text-gray-200">
+              Berbagai pilihan paket sesuai kebutuhan dan budget acara Anda
+            </p>
+          </div>
+
+          <div class="rounded-lg bg-white bg-opacity-10 p-6 text-center">
+            <MapPin :size="40" class="mx-auto mb-4" />
+            <h4 class="mb-2 text-lg font-semibold">
+              Lokasi Kami
+            </h4>
+            <p class="text-gray-200">
+              {{ service }}, Jabodebek
+            </p>
+          </div>
+
+          <div class="rounded-lg bg-white bg-opacity-10 p-6 text-center">
+            <Clock :size="40" class="mx-auto mb-4" />
+            <h4 class="mb-2 text-lg font-semibold">
+              Operasional
+            </h4>
+            <p class="text-gray-200">
+              24/7 Siap melayani kebutuhan event Anda
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-12 flex flex-col items-center justify-center gap-6 sm:flex-row">
+          <button
+            @click="openWhatsApp"
+            class="flex items-center justify-center gap-2 rounded-lg bg-white px-8 py-3 font-semibold text-black hover:bg-gray-100 transition"
+          >
+            <MessageCircle :size="20" />
+            Hubungi via WhatsApp
+          </button>
+          <a
+            href="tel:+6281234567890"
+            class="flex items-center justify-center gap-2 rounded-lg border-2 border-white px-8 py-3 font-semibold text-white hover:bg-white hover:bg-opacity-20 transition"
+          >
+            <Phone :size="20" />
+            Hubungi Telepon
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12 text-gray-300">
+      <div class="container mx-auto px-4">
+        <div class="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div>
+            <h4 class="mb-4 text-lg font-semibold text-white">
+              {{ businessName }}
+            </h4>
+            <p class="text-sm">
+              Layanan sewa peralatan event lengkap, terpercaya, dengan harga terjangkau dan pelayanan
+              profesional.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="mb-4 text-lg font-semibold text-white">
+              Layanan
+            </h4>
+            <ul class="space-y-2 text-sm">
+              <li
+                v-for="category in categories.slice(0, 4)"
+                :key="category.id"
+                class="hover:text-rose-400 transition cursor-pointer"
+              >
+                {{ category.name }}
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="mb-4 text-lg font-semibold text-white">
+              Hubungi Kami
+            </h4>
+            <ul class="space-y-2 text-sm">
+              <li class="flex gap-2">
+                <MapPin :size="16" class="mt-1 flex-shrink-0" />
+                <span>{{ service }}, Jabodebek</span>
+              </li>
+              <li class="flex gap-2">
+                <MessageCircle :size="16" class="mt-1 flex-shrink-0" />
+                <a href="https://wa.me/6281234567890" target="_blank" class="hover:text-white transition">
+                  08123 4567 890
+                </a>
+              </li>
+              <li class="flex gap-2">
+                <Mail :size="16" class="mt-1 flex-shrink-0" />
+                <a href="mailto:info@davinablower.com" class="hover:text-white transition">
+                  info@davinablower.com
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-8 text-center text-sm">
+          <p>
+            © 2025 {{ businessName }}. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Product Detail Modal -->
+    <div
+      v-if="showProductDetail && selectedProduct"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      @click="showProductDetail = false"
+    >
+      <div
+        class="relative w-full max-w-2xl rounded-lg bg-white p-8 max-h-96 overflow-y-auto"
+        @click.stop
+      >
+        <button
+          @click="showProductDetail = false"
+          class="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+        >
+          <X :size="24" />
+        </button>
+
+        <h3 class="mb-4 text-2xl font-bold text-gray-900">
+          {{ selectedProduct.name }}
+        </h3>
+
+        <div class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div class="h-64 rounded-lg bg-gray-200 flex items-center justify-center">
+            <Image :size="100" class="text-gray-400" />
+          </div>
+
+          <div>
+            <div class="mb-4">
+              <span class="text-3xl font-bold text-black">
+                Rp {{ formatPrice(selectedProduct.price_per_unit) }}
+              </span>
+              <span class="ml-2 text-gray-600"> / {{ selectedProduct.price_unit }}</span>
+            </div>
+
+            <p class="mb-4 text-gray-400">
+              {{ selectedProduct.description }}
+            </p>
+
+            <div class="mb-6 rounded-lg bg-gray-100 p-4">
+              <h4 class="mb-2 font-semibold text-gray-900">
+                Spesifikasi:
+              </h4>
+              <p class="whitespace-pre-line text-sm text-gray-400">
+                {{ selectedProduct.specifications }}
+              </p>
+            </div>
+
+            <div class="mb-6">
+              <p class="text-gray-400">
+                <strong>Minimal Pesanan:</strong> {{ selectedProduct.minimum_order }} {{ selectedProduct.price_unit }}
+              </p>
+              <p class="text-gray-400">
+                <strong>Stok Tersedia:</strong> {{ selectedProduct.stock }} unit
+              </p>
+            </div>
+
+            <button
+              @click="openWhatsApp"
+              class="w-full rounded-lg bg-black px-6 py-3 font-semibold text-white hover:bg-gray-800 transition"
+            >
+              Pesan Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import BlankLayout from '@/layouts/BlankLayout.vue';
+
+export default {
+  layout: BlankLayout,
+};
+</script>
+
+<script setup lang="ts">
+import { computed, ref, onMounted } from 'vue';
+import {
+  Menu,
+  MessageCircle,
+  Sparkles,
+  Image,
+  Eye,
+  Star,
+  ChevronUp,
+  ChevronDown,
+  Zap,
+  Gem,
+  Users,
+  Truck,
+  Package,
+  MapPin,
+  Clock,
+  Phone,
+  Mail,
+  X,
+} from 'lucide-vue-next';
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price_per_unit: number;
+  price_unit: string;
+  minimum_order: number;
+  specifications: string;
+  stock: number;
+  category_id: number;
+}
+
+interface Testimonial {
+  id: number;
+  content: string;
+  client_name: string;
+  client_role?: string;
+  rating: number;
+}
+
+interface Faq {
+  id: number;
+  question: string;
+  answer: string;
+  category?: string;
+}
+
+interface Gallery {
+  id: number;
+  title: string;
+  image: string;
+  description?: string;
+  category?: string;
+}
+
+interface Service {
+  id: number;
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+interface Props {
+  businessName: string;
+  service: string;
+  categories: Category[];
+  featuredProducts: Product[];
+  services: Service[];
+  galleries: Gallery[];
+  testimonials: Testimonial[];
+  faqs: Faq[];
+  whatsappNumber: string;
+}
+
+const props = defineProps<Props>();
+
+const mobileMenuOpen = ref(false);
+const selectedCategory = ref<number | null>(null);
+const selectedProduct = ref<Product | null>(null);
+const showProductDetail = ref(false);
+const openFaqIdx = ref(-1);
+
+const activeSection = ref('hero');
+
+const services = computed(() => props.services || []);
+
+const testimonials = computed(() => props.testimonials || []);
+
+const faqs = [
+  {
+    question: 'Berapa minimal sewa untuk setiap produk?',
+    answer: 'Minimal sewa berbeda untuk setiap produk. Untuk produk tertentu seperti kursi mulai dari 50 pcs, sementara produk lain mulai dari 1-2 unit. Lihat detail produk untuk informasi lengkap.',
+  },
+  {
+    question: 'Apakah harga sudah termasuk instalasi?',
+    answer: 'Untuk beberapa produk seperti AC, sound system, dan lighting sudah termasuk instalasi oleh teknisi profesional kami. Untuk produk lainnya, instalasi bisa ditambahkan dengan biaya tambahan.',
+  },
+  {
+    question: 'Apakah ada operator/teknisi yang standby?',
+    answer: 'Ya, kami menyediakan layanan teknisi/operator yang standby selama acara Anda berlangsung untuk memastikan semua peralatan berjalan dengan optimal.',
+  },
+  {
+    question: 'Bagaimana sistem pembayaran dan DP?',
+    answer: 'Pembayaran dapat dilakukan via transfer bank, e-wallet, atau tunai. DP minimal 30% dari total biaya untuk mengamankan reservasi. Pelunasan dilakukan sebelum barang dikirim.',
+  },computed(() => props.faqs || [])   }
+  )
+
+  sections.forEach((id) => {
+    const el = document.getElementById(id)
+    if (el) observer.observe(el)
+  })
+
+  // Scroll event sebagai fallback
+  const handleScroll = () => {
+    let currentSection = 'hero'
+    
+    for (const sectionId of sections) {
+      const el = document.getElementById(sectionId)
+      if (el && el.getBoundingClientRect().top < window.innerHeight / 2) {
+        currentSection = sectionId
+      }
+    }
+    
+    activeSection.value = currentSection
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true })
+
+  return () => {
+    window.removeEventListener('scroll', handleScroll)
+  }
+})
+</script>
+
+const filteredProducts = computed(() => {
+  if (!selectedCategory.value) {
+    return [];
+  }
+  return (props.featuredProducts as Product[]).filter(
+    (p: Product) => p.category_id === selectedCategory.value
+  );
+});
