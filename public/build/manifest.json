@@ -274,7 +274,7 @@
     "isEntry": true
   },
   "resources/js/app.ts": {
-    "file": "assets/app-D7b5A308.js",
+    "file": "assets/app-CkJ6flZq.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -431,7 +431,7 @@
     ]
   },
   "resources/js/pages/Admin/Products/Create.vue": {
-    "file": "assets/Create-CYRdpXff.js",
+    "file": "assets/Create-fC3SWXW4.js",
     "name": "Create",
     "src": "resources/js/pages/Admin/Products/Create.vue",
     "isDynamicEntry": true,
@@ -442,7 +442,7 @@
     ]
   },
   "resources/js/pages/Admin/Products/Edit.vue": {
-    "file": "assets/Edit-DXLaFSyX.js",
+    "file": "assets/Edit-Cgx61CWz.js",
     "name": "Edit",
     "src": "resources/js/pages/Admin/Products/Edit.vue",
     "isDynamicEntry": true,

@@ -195,7 +195,7 @@ const generateSlug = async (name: string): Promise<string> => {
     .replace(/-+/g, '-'); // Replace multiple dashes with single dash
 
   // Check if slug already exists
-  const existingSlugs = await fetch('/api/check-slug', {
+  const existingSlugs = await fetch('/check-slug', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
