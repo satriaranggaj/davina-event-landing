@@ -360,15 +360,49 @@
           Koleksi dokumentasi instalasi dan event profesional
         </p>
 
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <div
-            v-for="(gallery, idx) in galleries"
+            v-for="(gallery, idx) in visibleGalleries"
             :key="gallery.id"
-            class="overflow-hidden rounded-lg h-64 bg-gray-200 flex items-center justify-center group cursor-pointer"
+            class="overflow-hidden rounded-lg aspect-3/4 bg-gray-200 flex items-center justify-center group cursor-pointer"
             @click="openGalleryLightbox(idx)"
           >
             <img :src="gallery.image" :alt="gallery.title" class="w-full h-full object-cover group-hover:scale-105 transition" />
           </div>
+        </div>
+
+        <!-- Gallery Pagination Controls (only show if more than 12 images) -->
+        <div v-if="totalGalleryPages > 1" class="mt-8 flex items-center justify-center gap-4">
+          <button
+            @click="prevGalleryPage"
+            class="p-2 rounded-full bg-black text-white hover:bg-gray-800 transition"
+            aria-label="Previous gallery page"
+          >
+            <ChevronUp :size="24" class="-rotate-90" />
+          </button>
+
+          <div class="flex gap-2">
+            <button
+              v-for="(_, page) in Array.from({ length: totalGalleryPages })"
+              :key="page"
+              @click="currentGalleryPageIndex = page"
+              :class="page === currentGalleryPageIndex ? 'bg-black' : 'bg-gray-300 hover:bg-gray-400'"
+              class="w-2 h-2 rounded-full transition"
+              :aria-label="`Go to gallery page ${page + 1}`"
+            />
+          </div>
+
+          <div class="text-sm text-gray-600 px-4">
+            {{ currentGalleryPageIndex + 1 }} / {{ totalGalleryPages }}
+          </div>
+
+          <button
+            @click="nextGalleryPage"
+            class="p-2 rounded-full bg-black text-white hover:bg-gray-800 transition"
+            aria-label="Next gallery page"
+          >
+            <ChevronUp :size="24" class="rotate-90" />
+          </button>
         </div>
       </div>
     </section>
@@ -1176,6 +1210,7 @@ const showCart = ref(false);
 const showCheckoutForm = ref(false);
 const showGalleryLightbox = ref(false);
 const currentGalleryIndex = ref(0);
+const currentGalleryPageIndex = ref(0);
 const currentTestimonialIndex = ref(0);
 const currentProductSlideIndex = ref(0);
 let autoSlideInterval: ReturnType<typeof setInterval> | null = null;
@@ -1239,6 +1274,23 @@ const filteredProducts = computed(() => {
   return (props.featuredProducts as Product[]).filter(
     (p: Product) => p.category_id === selectedCategory.value
   );
+});
+
+const GALLERY_ITEMS_PER_PAGE = 12;
+
+const visibleGalleries = computed(() => {
+  const total = galleries.value.length;
+  if (total <= GALLERY_ITEMS_PER_PAGE) {
+    return galleries.value;
+  }
+
+  const startIdx = currentGalleryPageIndex.value * GALLERY_ITEMS_PER_PAGE;
+  const endIdx = startIdx + GALLERY_ITEMS_PER_PAGE;
+  return galleries.value.slice(startIdx, endIdx);
+});
+
+const totalGalleryPages = computed(() => {
+  return Math.ceil(galleries.value.length / GALLERY_ITEMS_PER_PAGE);
 });
 
 // Helper function to convert icon string to component
@@ -1356,7 +1408,9 @@ Pesan: ${consultationForm.value.pesan}
 
 // Gallery Lightbox Functions
 function openGalleryLightbox(index: number): void {
-  currentGalleryIndex.value = index;
+  // Calculate the actual index in the full galleries array
+  const actualIndex = currentGalleryPageIndex.value * GALLERY_ITEMS_PER_PAGE + index;
+  currentGalleryIndex.value = actualIndex;
   showGalleryLightbox.value = true;
 }
 
@@ -1377,6 +1431,23 @@ function nextGalleryImage(): void {
     currentGalleryIndex.value = 0;
   } else {
     currentGalleryIndex.value++;
+  }
+}
+
+// Gallery Page Navigation Functions
+function prevGalleryPage(): void {
+  if (currentGalleryPageIndex.value === 0) {
+    currentGalleryPageIndex.value = totalGalleryPages.value - 1;
+  } else {
+    currentGalleryPageIndex.value--;
+  }
+}
+
+function nextGalleryPage(): void {
+  if (currentGalleryPageIndex.value === totalGalleryPages.value - 1) {
+    currentGalleryPageIndex.value = 0;
+  } else {
+    currentGalleryPageIndex.value++;
   }
 }
 

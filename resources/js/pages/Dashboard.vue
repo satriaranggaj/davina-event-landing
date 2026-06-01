@@ -14,9 +14,9 @@ defineOptions({
 
     <div class="space-y-8">
         <!-- Welcome Banner -->
-        <div class="rounded-lg bg-gradient-to-r from-gray-100 to-gray-200 p-8 text-black">
+        <div class="rounded-lg bg-linear-to-r from-gray-100 to-gray-200 p-8 text-black">
             <h2 class="text-3xl font-bold mb-2">Selamat Datang, Admin! 👋</h2>
-            <p class="text-gray-800">Kelola semua konten dan pesanan Davina Blower dari dashboard ini.</p>
+            <p class="text-gray-800">Kelola semua konten dan pesanan Davina Event dari dashboard ini.</p>
         </div>
 
         <!-- Quick Access Grid -->

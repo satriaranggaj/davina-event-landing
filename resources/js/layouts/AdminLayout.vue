@@ -287,7 +287,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   pageTitle: 'Admin Dashboard',
-  businessName: 'Davina Blower',
+  businessName: 'Davina Event',
 });
 
 const currentRoute = computed(() => page.url);

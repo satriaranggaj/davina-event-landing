@@ -13,7 +13,7 @@ import { request } from '@/routes/password';
 
 defineOptions({
     layout: {
-        title: 'Login - Davina Blower',
+        title: 'Login - Davina Event',
         description: 'Masuk ke akun admin Anda',
     },
 });
@@ -38,11 +38,11 @@ defineProps<{
         v-bind="store.form()"
         :reset-on-success="['password']"
         v-slot="{ errors, processing }"
-        class="flex flex-col gap-6"
+        class="bg-white rounded-lg shadow-md p-6"
     >
         <div class="grid gap-6">
-            <div class="grid gap-2">
-                <Label for="email">Email</Label>
+            <div class="mb-6">
+                <Label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email</Label>
                 <Input
                     id="email"
                     type="email"
@@ -51,18 +51,18 @@ defineProps<{
                     autofocus
                     :tabindex="1"
                     autocomplete="email"
-                    placeholder="admin@davinalower.com"
+                    placeholder="admin@davinaevent.com"
                 />
                 <InputError :message="errors.email" />
             </div>
 
-            <div class="grid gap-2">
-                <div class="flex items-center justify-between">
-                    <Label for="password">Kata Sandi</Label>
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <Label for="password" class="block text-sm font-medium text-gray-900">Kata Sandi</Label>
                     <TextLink
                         v-if="canResetPassword"
                         :href="request()"
-                        class="text-sm"
+                        class="text-sm font-medium text-gray-900 hover:underline"
                         :tabindex="5"
                     >
                         Lupa kata sandi?
@@ -79,16 +79,16 @@ defineProps<{
                 <InputError :message="errors.password" />
             </div>
 
-            <div class="flex items-center justify-between">
-                <Label for="remember" class="flex items-center space-x-3">
+            <div class="mb-6 flex items-center">
+                <Label for="remember" class="flex items-center gap-2">
                     <Checkbox id="remember" name="remember" :tabindex="3" />
-                    <span>Ingat saya</span>
+                    <span class="text-sm font-medium text-gray-900">Ingat saya</span>
                 </Label>
             </div>
 
             <Button
                 type="submit"
-                class="mt-4 w-full bg-black text-white hover:bg-gray-800"
+                class="w-full bg-black text-white hover:bg-gray-800 py-2 font-medium rounded-lg"
                 :tabindex="4"
                 :disabled="processing"
                 data-test="login-button"
